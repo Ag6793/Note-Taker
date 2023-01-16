@@ -12,17 +12,18 @@ app.use(express.static('public'));
 
 //  app.get('/', (req,res) => res.send('Navigate to /notes'));
 //Get * should return the index.html file
- app.get('/', (req, res) => 
+ app.get('/', (req, res) => {
     res.sendFile(path.join(_dirname, 'public/index.html'))
-);
+ });
 
  //Get /notes should return the notes.html file
- app.get('/notes', (req, res) => 
+ app.get('/notes', (req, res) => {
     res.sendFile(path.join(_dirname, 'public/notes.html'))
- );
+ });
 
  //API routes
- app.get('/api/notes', (req,res) => res.json(termData));
+ app.get('/api/notes', (req,res) => {
+    res.json(termData)});
 
  //get /api/notes should read the db.json file and return allsaved notes as JSON
 
@@ -32,6 +33,6 @@ app.use(express.static('public'));
 
  //The application should include a db.json file that will be used to store and retrieve notes using the fs module
 
- app.listen(PORT, () =>
+ app.listen(PORT, () => 
     console.log('Example app listening at http://localhost:${PORT}')
  );
