@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-//the GET /api/notes should read the db.json file and return allsaved notes as JSON
 const termData = require('../../../db/db.json');
 const PORT = 3001;
 
@@ -19,7 +18,6 @@ app.use(express.static('../../../public'));
  });
 
  //Get /notes should return the notes.html file
- //The css styling for the notes page isn't working
  app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '../../../public/notes.html'))
  });
