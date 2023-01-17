@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use('/api', api);
+// app.use('/api', api)
 
 //Middleware to serve static files from /public
 app.use(express.static('public'));
