@@ -22,13 +22,15 @@ app.use(express.static('./public'));
     res.sendFile(path.join(__dirname, '/public/notes.html'))
  });
 
- //API routes
+ //API route that will return the content to the json file
  app.get('/api/notes', (req,res) => {
-    res.json(termData)});
+   res.json(termData)});
 
- //get /api/notes should read the db.json file and return allsaved notes as JSON
+ app.post('/api/notes',(req, res) => {
+   //should receive a new note to save on the request body,add it to the db.json file, 
+   //and then return the new note to the client.
+ })
 
- //Post /api/notes should receive a new note to save on the request body,add it to the db.json file, and then return the new note to the client.
 
  //Need to give each note a unique id when its saved (look into npm packages that could do this)
 
@@ -37,3 +39,5 @@ app.use(express.static('./public'));
  app.listen(PORT, () =>
  console.log(`Example app listening at http://localhost:${PORT}`)
 );
+
+
