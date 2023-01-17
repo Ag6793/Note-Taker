@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-// const api = require ('./index');
 //the GET /api/notes should read the db.json file and return allsaved notes as JSON
 const termData = require('../../../db/db.json');
 const PORT = 3001;
@@ -9,10 +8,10 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use('/api', api)
+
 
 //Middleware to serve static files from /public
-app.use(express.static('public'));
+app.use(express.static('../../../public'));
 
 //Get * should return the index.html file
  app.get('/', (req, res) => {
@@ -20,7 +19,7 @@ app.use(express.static('public'));
  });
 
  //Get /notes should return the notes.html file
- //When you click "get started" it takes you to notes.html instead of /notes returning the html file???
+ //The css styling for the notes page isn't working
  app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '../../../public/notes.html'))
  });
