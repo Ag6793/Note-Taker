@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const termData = require('../../../db/db.json');
+const termData = require('./db/db.json');
 const PORT = 3001;
 
 const app = express();
@@ -10,16 +10,16 @@ app.use(express.json());
 
 
 //Middleware to serve static files from /public
-app.use(express.static('../../../public'));
+app.use(express.static('./public'));
 
 //Get * should return the index.html file
  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../../public/index.html'))
+    res.sendFile(path.join(__dirname, '/public/index.html'))
  });
 
  //Get /notes should return the notes.html file
  app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../../public/notes.html'))
+    res.sendFile(path.join(__dirname, '/public/notes.html'))
  });
 
  //API routes
