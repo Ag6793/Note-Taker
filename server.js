@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 //Method for generating unique ids
 const uuid = require('./public/assets/js/uuid');
-const termData = require('./db/db.json');
+const noteData = require('./db/db.json');
 const PORT = 3001;
 
 const app = express();
@@ -24,58 +25,60 @@ app.use(express.static('./public'));
     res.sendFile(path.join(__dirname, '/public/notes.html'))
  });
 
- //API route that will return the content to the json file
- app.get('/api/notes', (req,res) => {
-   res.json(termData)
-});
+app.route('/api/notes')
+   .get((req,res) => {
+      res.json(noteData)
+   })
 
+   .post ((req, res) => {
+      console.info(`${req.method} request received to add new note`)
+      // res.sendFile(path.join(__dirname, './db/db.json'))
 
+         //When user inputs text in the title and body
+      const { title, text} = req.body;
 
- app.post('/api/notes',(req, res) => {
-
-   console.info(`${req.method} request received to add a new note`);
-   //When user inputs text in the title and body
-   const { title, text} = req.body;
-
-   if ( title && text) {
-      const newNote = {
-         title,
-         text, 
-         //Unique ID for each note
-         text_id: uuid()
-      };
-
-      const noteString = JSON.stringify(newNote);
-
-
+      if ( title && text) {
+         const newNote = {
+            title,
+            text, 
+            //Unique ID for each note
+            text_id: uuid()
+         };
 
       const response = {
          status: 'success',
          body: newNote,
       };
 
-      console.log(response);
+      fs.readFile('./db/db.json', 'utf-8', (err,jsonString) => {
+         if(err) {
+            console.log(err);
+         } else {
+            try {
+               const data = JSON.parse(jsonString);
+               console.log(data);
+         } catch (err) {
+            console.log('Error parsing JSON', err);
+         }
+      }})
 
-      
+      //Currectly rewriting entire json file instead of adding new files
+      fs.writeFile('./db/db.json', JSON.stringify(newNote, null, 2), err => {
+         if(err) {
+            console.log(err);
+         } else {
+            console.log('Note added!');
+         }
+      }) 
+
+      console.log(response);
       //If POST request was successful 
       res.status(201).json(response);
    } else {
       //If POST request didn't work
       res.status(500).json('Error in creating new note');
    }
-
-   //should receive a new note to save on the request body,add it to the db.json file, 
-   //and then return the new note to the client.
-
  });
-
- //*Bonus :id will target a specific note
-//  app.delete('/app/notes/:id', (req, res) => { });
-
-
- //Need to give each note a unique id when its saved (look into npm packages that could do this)
-
- //The application should include a db.json file that will be used to store and retrieve notes using the fs module
 
  app.listen(PORT, () =>
  console.log(`Example app listening at http://localhost:${PORT}`)
