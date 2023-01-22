@@ -34,7 +34,7 @@ app.route('/api/notes')
    .post ((req, res) => {
       console.info(`${req.method} request received to add new note`)
 
-         //When user inputs text in the title and body
+      //When user inputs text in the title and body
       const { title, text} = req.body;
 
       if ( title && text) {
