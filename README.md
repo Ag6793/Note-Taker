@@ -8,7 +8,8 @@ As a busy student, I want to stay organized by writing important tasks and remin
 ## Description
 This application will receive user input, and it should save data to the page.
 
-Deployed Heroku Url:
+Deployed Heroku Url: https://pure-ocean-07353.herokuapp.com/
+
 ![Screenshot_of_application](./Images/Screen-shot_Note-Taker_1.jpeg)
 
 ## Technologies
