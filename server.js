@@ -63,6 +63,7 @@ app.route('/api/notes')
       }})
 
       //Appends to array in db.json
+      //current bug: it adds the new data to the end of the array, not inside it
       fs.appendFile("./db/db.json", JSON.stringify(newNote, null, 2), err => {
          if(err) {
             console.log(err);
@@ -81,8 +82,10 @@ app.route('/api/notes')
    }
  });
 
+ app.get('*', (req, res) => {
+   res.sendFile(path.join(__dirname, '/public/index.html'))
+});
+
  app.listen(PORT, () =>
  console.log(`Example app listening at http://localhost:${PORT}`)
 );
-
-
