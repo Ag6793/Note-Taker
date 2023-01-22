@@ -10,9 +10,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-
-
 //Middleware to serve static files from /public
 app.use(express.static('./public'));
 
