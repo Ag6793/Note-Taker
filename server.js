@@ -1,15 +1,16 @@
 const express = require('express');
 const path = require('path');
+// const fsPromises = require('fs').promises;
 const fs = require('fs');
 //Method for generating unique ids
 const uuid = require('./public/assets/js/uuid');
 const noteData = require('./db/db.json');
 const PORT = 3001;
-
 const app = express();
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+
 
 
 //Middleware to serve static files from /public
@@ -32,7 +33,6 @@ app.route('/api/notes')
 
    .post ((req, res) => {
       console.info(`${req.method} request received to add new note`)
-      // res.sendFile(path.join(__dirname, './db/db.json'))
 
          //When user inputs text in the title and body
       const { title, text} = req.body;
@@ -62,8 +62,8 @@ app.route('/api/notes')
          }
       }})
 
-      //Currectly rewriting entire json file instead of adding new files
-      fs.writeFile('./db/db.json', JSON.stringify(newNote, null, 2), err => {
+      //Appends to array in db.json
+      fs.appendFile("./db/db.json", JSON.stringify(newNote, null, 2), err => {
          if(err) {
             console.log(err);
          } else {
@@ -72,6 +72,7 @@ app.route('/api/notes')
       }) 
 
       console.log(response);
+
       //If POST request was successful 
       res.status(201).json(response);
    } else {
