@@ -6,7 +6,7 @@
 As a busy student, I want to stay organized by writing important tasks and reminders in one accessible place.
 
 ## Description
-This application will receive user input, and it should save data to the page.
+This application will receive user input, and it will save the input data to the page.
 
 Deployed Heroku Url: https://notetaker233.herokuapp.com/
 
