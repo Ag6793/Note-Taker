@@ -4,85 +4,80 @@ const path = require('path');
 const fs = require('fs');
 //Method for generating unique ids
 const uuid = require('./public/assets/js/uuid');
-const noteData = require('./db/db.json');
 const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Middleware to serve static files from /public
-app.use(express.static('./public'));
+app.use(express.static('public'));
 
 //Get * should return the index.html file
- app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/index.html'))
- });
+app.get('/', (req, res) => {
+   res.sendFile(path.join(__dirname, '/public/index.html'))
+});
 
- //Get /notes should return the notes.html file
- app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/notes.html'))
- });
+//Get /notes should return the notes.html file
+app.get('/notes', (req, res) => {
+   res.sendFile(path.join(__dirname, '/public/notes.html'))
+});
 
-app.route('/api/notes')
-   .get((req,res) => {
-      res.json(noteData)
+app.get("/api/notes", (req, res) => {
+   fs.readFile("./db/db.json", "utf-8", (err, response) => {
+      if (err) {
+         console.log(err)
+      } else {
+         var data = JSON.parse(response)
+         res.json(data)
+      }
    })
 
-   .post ((req, res) => {
+})
+
+app.post("/api/notes", (req, res) => {
       console.info(`${req.method} request received to add new note`)
 
       //When user inputs text in the title and body
-      const { title, text} = req.body;
+      const { title, text } = req.body;
 
-      if ( title && text) {
+      if (title && text) {
          const newNote = {
             title,
-            text, 
+            text,
             //Unique ID for each note
             text_id: uuid()
          };
 
-      const response = {
-         status: 'success',
-         body: newNote,
-      };
+         const response = {
+            status: 'success',
+            body: newNote,
+         };
 
-      fs.readFile('./db/db.json', 'utf-8', (err,jsonString) => {
-         if(err) {
-            console.log(err);
-         } else {
-            try {
-               const data = JSON.parse(jsonString);
-               console.log(data);
-         } catch (err) {
-            console.log('Error parsing JSON', err);
-         }
-      }})
+         //This will read the data in the json file and it will add the new data to the array
+         fs.readFile("./db/db.json", "utf-8", (err, response) => {
+            if (err) {
+               console.log(err)
+            } else {
+               var data = JSON.parse(response)
+               data.push(newNote)
+               fs.writeFile("./db/db.json", JSON.stringify(data, null, 2), err => {
+                  err ? console.log(err) : console.log("Yay!")
+               })
+            }
+         })
 
-      //Appends to array in db.json
-      //current bug: it adds the new data to the end of the array, not inside it
-      fs.appendFile("./db/db.json", JSON.stringify(newNote, null, 2), err => {
-         if(err) {
-            console.log(err);
-         } else {
-            console.log('Note added!');
-         }
-      }) 
+         //If POST request was successful 
+         res.status(201).json(response);
+      } else {
+         //If POST request didn't work
+         res.status(500).json('Error in creating new note');
+      }
+   });
 
-      console.log(response);
-
-      //If POST request was successful 
-      res.status(201).json(response);
-   } else {
-      //If POST request didn't work
-      res.status(500).json('Error in creating new note');
-   }
- });
-
- app.get('*', (req, res) => {
+app.get('*', (req, res) => {
    res.sendFile(path.join(__dirname, '/public/index.html'))
 });
 
- app.listen(PORT, () =>
- console.log(`Example app listening at http://localhost:${PORT}`)
+app.listen(PORT, () =>
+   console.log(`Example app listening at http://localhost:${PORT}`)
 );
