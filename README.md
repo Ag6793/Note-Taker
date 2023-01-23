@@ -24,6 +24,10 @@ Clone the repository and Install npm.
 ## Usage
 This application will be resourceful with staying organized and up to date on tasks. This coud be used as a reminder app, a grocery list, or even a chore to-do list.
 
+## Future Development
+* The user would be able to open a specific note and read the contents.
+* The user would be able to delete a note.
+
 ## Credits
 Alexandria Guerrero, https://github.com/Ag6793
 
